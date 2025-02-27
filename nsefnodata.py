@@ -103,8 +103,7 @@ def save_combined_data(dataframes, output_file):
             (combined_df['ChngInOpnIntrst'] < 0) & (combined_df['FU_LTP_Change'] > 0)
         ]
         choices = ['LB', 'SB', 'LU', 'SC']
-        combined_df['BuildupStatus(Fu)'] = np.select(conditions, choices, default=np.nan).astype(object)
-
+        combined_df['BuildupStatus(Fu)'] = np.select(conditions, choices, default="NaN")
         
         # 4️⃣.1 Compute BuildupStatus (LB, SB, LU, SC)
         conditions = [
@@ -114,8 +113,7 @@ def save_combined_data(dataframes, output_file):
             (combined_df['Cumulative_ChngInOpnIntrst'] < 0) & (combined_df['FU_LTP_Change'] > 0)
         ]
         choices = ['LB', 'SB', 'LU', 'SC']
-        combined_df['BuildupStatus(FUc)'] = np.select(conditions, choices, default=np.nan).astype(object)
-
+        combined_df['BuildupStatus(FUc)'] = np.select(conditions, choices, default="NaN")
         
         combined_df = combined_df.sort_values(by=['TckrSymb', 'XpryDt', 'TradDt'])
 
