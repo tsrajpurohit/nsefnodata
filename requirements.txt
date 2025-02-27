@@ -1,0 +1,6 @@
+gspread
+oauth2client
+pandas
+nsepython
+python-dotenv
+pyarrow
