@@ -8,19 +8,26 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import numpy as np
 
 # Function to find the previous working day
-def previous_working_day(date):
+# Function to find the previous working day (including today)
+def previous_working_day(date, include_today=True):
+    if include_today and date.weekday() < 5:  # If today is a weekday, include it
+        return date
     while date.weekday() >= 5:  # Skip weekends
         date -= timedelta(days=1)
     return date
 
-# Generate working days for past 'months' months
+# Generate working days for the past 'months' months (including today)
 def generate_working_days(start_date, months=6):
-    working_days = set()
-    for i in range(months * 30):  # Approx 6 months
-        day = previous_working_day(start_date - timedelta(days=i))
-        if day not in working_days:
-            working_days.add(day)
-    return sorted(working_days, reverse=True)
+    working_days = []
+    days_count = 0
+    date = previous_working_day(start_date)  # Start from today or last working day
+
+    while days_count < months * 22:  # Approx 22 trading days per month
+        working_days.append(date)
+        days_count += 1
+        date = previous_working_day(date - timedelta(days=1), include_today=False)  # Move to previous working day
+
+    return working_days
 
 # Get today's date and generate working days
 today = datetime.now()
